@@ -1,3 +1,6 @@
+create database flight_system;
+use flight_system;
+
 CREATE TABLE Airlines (
 Id INTEGER PRIMARY KEY,
 Name VARCHAR(255) NOT NULL,
