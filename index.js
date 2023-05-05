@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express();
 const PORT = (process.env.NODE_ENV === 'development' ? 2000 : 3000);
-
+const { getUserById } = require('./database/connection');
 
 app.get('/', (req, res) => {
 
@@ -12,8 +12,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/json', (req, res) => {
-    
     res.json({ "name": "Beni" })
+})
+
+app.get('/users/:id', (req, res) => {
+    getUserById(req.params.id)
+        .then(user => {
+            res.json(user);
+        })
+        .catch(err=>{
+            res.status(500).send(`Something went wrong, err: ${err}`)
+        })
 })
 
 
