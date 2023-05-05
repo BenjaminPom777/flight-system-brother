@@ -1,0 +1,25 @@
+{
+  "name": "flight-system-brother",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {    
+    "devw": "SET NODE_ENV=development&& nodemon index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start" : "NODE_ENV=production node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenjaminPom777/flight-system-brother.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenjaminPom777/flight-system-brother/issues"
+  },
+  "homepage": "https://github.com/BenjaminPom777/flight-system-brother#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
