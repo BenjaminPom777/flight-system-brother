@@ -2,7 +2,11 @@ const express = require('express')
 const app = express();
 const PORT = (process.env.NODE_ENV === 'development' ? 2000 : 3000);
 const {getUserById,getUsers,connection} = require('./database/connection');
-const {addTicket,getTicketById,getAllTickets} = require('./database/db_controllers/ticketsController');
+const {addTicket,getTicketById,getAllTickets} = require('./database/dataManagers/ticketsDataManager');
+const bodyParser = require('body-parser');
+// Parse JSON request body
+app.use(bodyParser.json());
+//TODO change addTickets to use post with body (need body parser and smth with json)
 
 
 app.get('/', (req, res) => {
@@ -47,13 +51,13 @@ app.get('/tickets/', (req, res) => {
         })
 })
 
-app.post('/tickets/:flightId/:customerId', (req, res) => {
+app.post('/tickets/', (req, res) => {
+    console.log(req.body);
     // Extract the ticket data from the request parameters
-    const flightId = req.params.flightId;
-    const customerId = req.params.customerId;
-  
-    // // Generate a new ticket ID by incrementing the last ID in the array
-    // const id = tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1;
+    const flightId = req.body.flightId;
+    const customerId = req.body.customerId;
+    
+   
   
     // Create a new ticket object with the extracted data and generated ID
     addTicket(flightId,customerId)
