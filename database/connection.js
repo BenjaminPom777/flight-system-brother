@@ -12,15 +12,20 @@ const connection = mysql.createConnection({
   password: process.env.PW
 });
 
-const getUserByName = (name) => {
-  // simple query
+const getUsers = () => {
+  return new Promise((resolve, reject) => {
   connection.query(
-    `SELECT * FROM customers WHERE First_Name = ?`, [name],
+    `SELECT * FROM customers`,
     function (err, results, fields) {
       console.log(results); // results contains rows returned by server
       console.log(fields); // fields contains extra meta data about results, if available
+      if (err) {
+        return reject(err)
+      }
+      return resolve(results)
     }
   );
+  })
 }
 
 
@@ -43,5 +48,5 @@ const getUserById = (id) => {
 
 
 module.exports = {
-  getUserById
+  getUserById,getUsers,connection
 }
