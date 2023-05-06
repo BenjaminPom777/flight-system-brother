@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express();
 const PORT = (process.env.NODE_ENV === 'development' ? 2000 : 3000);
-const {getUserById,getUsers} = require('./database/connection');
+const {getUserById,getUsers,connection} = require('./database/connection');
+const {addTicket,getTicketById,getAllTickets} = require('./database/db_controllers/ticketsController');
 
 
 app.get('/', (req, res) => {
@@ -35,6 +36,37 @@ app.get('/users/', (req, res) => {
             res.status(500).send(`Something went wrong, err: ${err}`)
         })
 })
+
+app.get('/tickets/', (req, res) => {
+    getAllTickets()
+        .then(users => {
+            res.json(users);
+        })
+        .catch(err=>{
+            res.status(500).send(`Something went wrong, err: ${err}`)
+        })
+})
+
+app.post('/tickets/:flightId/:customerId', (req, res) => {
+    // Extract the ticket data from the request parameters
+    const flightId = req.params.flightId;
+    const customerId = req.params.customerId;
+  
+    // // Generate a new ticket ID by incrementing the last ID in the array
+    // const id = tickets.length > 0 ? tickets[tickets.length - 1].id + 1 : 1;
+  
+    // Create a new ticket object with the extracted data and generated ID
+    addTicket(flightId,customerId)
+        .then(results => {
+            res.json(results);
+        })
+        .catch(err=>{
+            res.status(500).send(`Something went wrong, err: ${err}`)
+        })
+  });
+
+
+
 
 
 
