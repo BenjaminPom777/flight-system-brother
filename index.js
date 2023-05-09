@@ -6,7 +6,7 @@ const {addTicket,getTicketById,getAllTickets} = require('./database/dataManagers
 const bodyParser = require('body-parser');
 // Parse JSON request body
 app.use(bodyParser.json());
-//TODO change addTickets to use post with body (need body parser and smth with json)
+
 
 
 app.get('/', (req, res) => {
@@ -56,8 +56,6 @@ app.post('/tickets/', (req, res) => {
     // Extract the ticket data from the request parameters
     const flightId = req.body.flightId;
     const customerId = req.body.customerId;
-    
-   
   
     // Create a new ticket object with the extracted data and generated ID
     addTicket(flightId,customerId)
