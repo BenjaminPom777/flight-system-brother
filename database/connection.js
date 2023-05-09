@@ -1,7 +1,20 @@
 //get the local properties for db connection
 require("dotenv").config();
-// get the client
 const mysql = require("mysql2");
+
+
+const knex = require('knex').knex({
+  client: 'mysql2',
+  connection: {
+    host : process.env.HOST,
+    port : 3306,
+    user : process.env.USER,
+    password : process.env.PW,
+    database : process.env.DATABASE
+  }
+});
+
+
 
 // create the connection to database
 const connection = mysql.createConnection({
@@ -14,4 +27,5 @@ const connection = mysql.createConnection({
 
 module.exports = {
   connection,
+  knex
 };
