@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express();
 const PORT = (process.env.NODE_ENV === 'development' ? 2000 : 3000);
-const {getUserById,getUsers,connection} = require('./database/connection');
-const {addTicket,getTicketById,getAllTickets} = require('./database/dataManagers/ticketsDataManager');
+const { getUserById, getUsers, connection } = require('./database/connection');
+const { addTicket, getTicketById, getAllTickets } = require('./database/dataManagers/ticketsDataManager');
 const bodyParser = require('body-parser');
 // Parse JSON request body
 app.use(bodyParser.json());
@@ -26,7 +26,7 @@ app.get('/users/:id', (req, res) => {
         .then(user => {
             res.json(user);
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send(`Something went wrong, err: ${err}`)
         })
 })
@@ -36,7 +36,7 @@ app.get('/users/', (req, res) => {
         .then(users => {
             res.json(users);
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send(`Something went wrong, err: ${err}`)
         })
 })
@@ -46,7 +46,7 @@ app.get('/tickets/', (req, res) => {
         .then(users => {
             res.json(users);
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send(`Something went wrong, err: ${err}`)
         })
 })
@@ -57,15 +57,18 @@ app.post('/tickets/', (req, res) => {
     const flightId = req.body.flightId;
     const customerId = req.body.customerId;
   
+
+
+
     // Create a new ticket object with the extracted data and generated ID
-    addTicket(flightId,customerId)
+    addTicket(flightId, customerId)
         .then(results => {
             res.json(results);
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).send(`Something went wrong, err: ${err}`)
         })
-  });
+});
 
 
 
