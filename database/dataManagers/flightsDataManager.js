@@ -7,6 +7,16 @@ const { knex } = require('../connection')
 // removeFlight ()
 // *bonus: getFlightsByAirline ()
 
+const getFlights = async (id) => {
+    let data;
+    if (id) {
+        data = await knex('flights').select('*').where("Id", "=", id)
+    } else {
+        data = await knex('flights').select('*')
+    }
+    return data;
+}
+
 
 const addFlight = async (flight) => {
     const data = await knex('flights').insert(flight)
@@ -22,5 +32,6 @@ const updateFlight = async (flight, id) => {
 
 module.exports = {
     addFlight,
-    updateFlight
+    updateFlight,
+    getFlights
 }

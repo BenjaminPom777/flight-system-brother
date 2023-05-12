@@ -1,9 +1,12 @@
+// MVC
+
 const express = require('express')
 const app = express();
 const PORT = (process.env.NODE_ENV === 'development' ? 2000 : 3000);
 const { getUserById, getUsers } = require('./database/dataManagers/usersDataManager');
 const { addTicket, getTicketById, getAllTickets } = require('./database/dataManagers/ticketsDataManager');
-const { addFlight, updateFlight } = require('./database/dataManagers/flightsDataManager');
+const flightsRouter = require('./web/router/flightsRouter')
+
 const bodyParser = require('body-parser');
 // Parse JSON request body
 app.use(bodyParser.json());
@@ -68,38 +71,13 @@ app.post('/tickets/', (req, res) => {
         })
 });
 
-app.post('/flights', async (req, res) => {
-    console.log(req.body);
-    // Extract the ticket data from the request parameters
-    const flight = req.body;
-    try {
-        const flightIds = await addFlight(flight)
-        if (flightIds.length > 0) {
-            return res.json({ createdFlights: flightIds })
-        }
-    } catch (error) {
-        return res.status(500).send(error)
-    }
-})
+app.use('/flights', flightsRouter)
 
+// app.get('/flights', getAllFlights)
+// app.get('/flights/:id', getFlightById)
+// app.post('/flights', postFlight)
+// app.put('/flights/:id', putFlight)
 
-app.put('/flights/:id', async (req, res) => {
-    console.log(req.body);
-    const id = req.params.id;
-    if (!id) {
-        return res.status(400).send("No id provided")
-    }
-
-    const data = req.body;
-    try {
-        const updateFlightsResponse = await updateFlight(data, id)
-  
-            return res.json({updated_rows : updateFlightsResponse})
-        
-    } catch (error) {
-        return res.status(500).send(error)
-    }
-})
 
 
 
