@@ -58,8 +58,8 @@ app.get("/users/", (req, res) => {
 // app.post("/tickets/", addTicket);
 // app.delete("/tickets/:id", removeTicket);
 
-app.use("/flights", flightsRouter);
-app.use("/tickets", ticketsRouter);
+app.use("/api/flights", flightsRouter);
+app.use("/api/tickets", ticketsRouter);
 // app.get('/flights', getAllFlights)
 // app.get('/flights/:id', getFlightById)
 // app.post('/flights', postFlight)
