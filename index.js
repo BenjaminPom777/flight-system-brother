@@ -16,6 +16,7 @@ const {
 } = require("./web/controller/ticketsController")
 const flightsRouter = require("./web/router/flightsRouter")
 const ticketsRouter = require("./web/router/ticketsRouter");
+const airlinesRouter = require("./web/router/airlinesRouter");
 const Ticket = require("./model/Ticket");
 
 const bodyParser = require("body-parser");
@@ -60,6 +61,7 @@ app.get("/users/", (req, res) => {
 
 app.use("/api/flights", flightsRouter);
 app.use("/api/tickets", ticketsRouter);
+app.use("/api/airlines", airlinesRouter);
 // app.get('/flights', getAllFlights)
 // app.get('/flights/:id', getFlightById)
 // app.post('/flights', postFlight)
