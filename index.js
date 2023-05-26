@@ -7,34 +7,63 @@ const {
   getUserById,
   getUsers,
 } = require("./database/dataManagers/usersDataManager")
+const path = require('path')
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 
 
-const {
-  addTicket,
-  getTickets,
-  removeTicket
-} = require("./web/controller/ticketsController")
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'web/views'));
+app.use(express.static('public'));
+
+
 const flightsRouter = require("./web/router/flightsRouter")
 const ticketsRouter = require("./web/router/ticketsRouter");
 const airlinesRouter = require("./web/router/airlinesRouter");
-const Ticket = require("./model/Ticket");
 
-const bodyParser = require("body-parser");
-// Parse JSON request body
-app.use(bodyParser.json());
+const {getFlights} = require('./database/dataManagers/flightsDataManager')
+// const {getAllFlights} = require('./web/controller/flightsController')
 
-app.get("/", (req, res) => {
-  console.log(req);
-  console.log(res);
 
-  res.send("hello world");
-});
+app.get('/flights', async (req, res) => {
+  try {
+    const flightsJson = await getFlights()
+    console.log('flightsJson: ',flightsJson)
+    return res.render('flights',{flights:flightsJson})
+  
+
+} catch (error) {    
+    return res.status(500).send(error)
+}
+})
+
+const authMiddleware = (req, res, next) => {
+  //We checking if the user and password and token and something 
+  // i no remember atm and I know that the user is ILIA and he is authorized
+  if (true) {  //authenticated
+    req.authenticatedUsername = 'Ilia'
+    console.log('first middleware has been called')
+    return next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
+
+
+app.get('/logoin', () => {
+  //we should return view with login
+})
+
+app.use('/json', authMiddleware)
 
 app.get("/json", (req, res) => {
+  console.log(req.authenticatedUsername)
   res.json({ name: "Beni" });
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", (req, res, next) => {
   getUserById(req.params.id)
     .then((user) => {
       res.json(user);
@@ -62,6 +91,11 @@ app.get("/users/", (req, res) => {
 app.use("/api/flights", flightsRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/airlines", airlinesRouter);
+
+// app.use('/api/airlines', (req, res, next) => {
+//   console.log('this should be logged after api/airlines next() has been called ')
+//   next('hello world')
+// })
 // app.get('/flights', getAllFlights)
 // app.get('/flights/:id', getFlightById)
 // app.post('/flights', postFlight)
