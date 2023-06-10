@@ -6,60 +6,65 @@ const PORT = process.env.NODE_ENV === "development" ? 2000 : 3000;
 const {
   getUserById,
   getUsers,
-} = require("./database/dataManagers/usersDataManager")
-const path = require('path')
+} = require("./database/dataManagers/usersDataManager");
+const path = require("path");
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "web/views"));
+app.use(express.static("public"));
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'web/views'));
-app.use(express.static('public'));
-
-
-const flightsRouter = require("./web/router/flightsRouter")
+const flightsRouter = require("./web/router/flightsRouter");
 const ticketsRouter = require("./web/router/ticketsRouter");
 const airlinesRouter = require("./web/router/airlinesRouter");
 
-const {getFlights} = require('./database/dataManagers/flightsDataManager')
+const {
+  getFlights,
+  getPresentationFlights,
+} = require("./database/dataManagers/flightsDataManager");
 // const {getAllFlights} = require('./web/controller/flightsController')
 
-
-app.get('/flights', async (req, res) => {
+app.get("/flights", async (req, res) => {
   try {
-    const flightsJson = await getFlights()
-    console.log('flightsJson: ',flightsJson)
-    return res.render('flights',{flights:flightsJson})
-  
+    const flightsJson = await getFlights();
+    // createPresentationFlights(flightsJson)
+    // console.log("flightsJson: ", flightsJson);
 
-} catch (error) {    
-    return res.status(500).send(error)
-}
-})
+    return res.render("flights", { flights: flightsJson });
+    // getPresentationFlights();
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+const createPresentationFlights = (jsonObjs) => {
+  const flightsPresntation = [];
+  jsonObjs.forEach((element) => {});
+};
 
 const authMiddleware = (req, res, next) => {
-  //We checking if the user and password and token and something 
+  //We checking if the user and password and token and something
   // i no remember atm and I know that the user is ILIA and he is authorized
-  if (true) {  //authenticated
-    req.authenticatedUsername = 'Ilia'
-    console.log('first middleware has been called')
-    return next()
+  if (true) {
+    //authenticated
+    req.authenticatedUsername = "Ilia";
+    console.log("first middleware has been called");
+    return next();
   } else {
-    res.redirect('/login')
+    res.redirect("/login");
   }
-}
+};
 
-
-
-app.get('/logoin', () => {
+app.get("/logoin", () => {
   //we should return view with login
-})
+});
 
-app.use('/json', authMiddleware)
+app.use("/json", authMiddleware);
 
 app.get("/json", (req, res) => {
-  console.log(req.authenticatedUsername)
+  console.log(req.authenticatedUsername);
   res.json({ name: "Beni" });
 });
 
